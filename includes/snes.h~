@@ -1,0 +1,15 @@
+#ifndef __SNES_H__
+#define __SNES_H__
+
+#include <stdint.h>
+
+#define RAM_SIZE	1 << 7
+
+uint8_t		*lorom_mapper(uint16_t addr, uint8_t bank);
+
+int		ram_writter(uint16_t addr, uint8_t bank, uint16_t data, uint8_t*(*mapper)(uint16_t, uint8_t));
+int		is_mad1();
+
+void		*rom_reader(uint16_t addr, uint8_t bank);
+void		*sram_reader(uint16_t addr, uint8_t bank);
+#endif

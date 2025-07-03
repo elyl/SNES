@@ -10,7 +10,7 @@
 int main()
 {
   int       fd;
-  uint8_t   buffer[256];
+  uint8_t   buffer[4097];
   t_header  head;
   t_vector  vectors;
 
@@ -25,9 +25,9 @@ int main()
   printf("%02X\n", vectors.fields.reset);
   print_array(vectors.data, VECTORS_SIZE);
   lseek(fd, 0x007FC0, SEEK_SET);
-  read(fd, buffer, 255);
+  read(fd, buffer, 4096);
   print_array(buffer, 255);
-  decompile_function(buffer, 10);
+  decompile_function(buffer, 4000);
 }
 
 void display_header(t_header *head)
@@ -67,19 +67,26 @@ void decompile_function(uint8_t *buffer, int size)
 //    printf("op : %x\n", current->opcode);
     printf("%s", current->name);
     switch (current->adm)
-    {
+      {
+      case implied:
+	break;
+      case immediate:
+      case immediate_memory:
+      case immediate_index:
+	printf(" $%02X", buffer[i + 1]);
+	break;
       case block_move:
-        printf(" $%02X $%02X %03d", buffer[i + 1], buffer[i + 2], buffer[i + 3]);
-        break;
+	printf(" $%02X $%02X %03d", buffer[i + 1], buffer[i + 2], buffer[i + 3]);
+	break;
       case absolute_long:
-        printf(" $%02X%02X%02X", buffer[i + 1], buffer[i + 2], buffer[i + 3]);
-        break;
+	printf(" $%02X%02X%02X", buffer[i + 1], buffer[i + 2], buffer[i + 3]);
+	break;
       default:
-        for (int j = 1; j < current->size; ++j)
-        {
-          printf(" %02X", buffer[i + j]);
-        }
-    }
+	for (int j = 1; j < current->size; ++j)
+	  {
+	    printf(" %02X", buffer[i + j]);
+	  }
+      }
     i += MAX(current->size, 1);
     printf("\n");
 //    printf("%d\n", i);

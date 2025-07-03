@@ -1,0 +1,18 @@
+#include <stdint.h>
+#include <stddef.h>
+#include "includes/snes.h"
+
+int is_mad1()
+{
+  return (1);
+}
+
+void *rom_reader(uint16_t addr, uint8_t bank)
+{
+  return (NULL);
+}
+
+void *sram_reader(uint16_t addr, uint8_t bank)
+{
+  return (NULL);
+}

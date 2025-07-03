@@ -1,0 +1,9 @@
+#include "includes/ops.h"
+#include "includes/snes.h"
+
+/* Prototype : void func(adressing_mode am, void *data); */
+
+void ops_mov(adressing_mode am, void *data)
+{
+  
+}
